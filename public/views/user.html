@@ -1,0 +1,63 @@
+<!-- public/views/index.html -->
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Starter MEAN Single Page Application</title>
+
+    <style>
+        * {
+            font-family: Helvetica, sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #loader {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            background: #2a2826 url(../img/1485196840152.gif) center no-repeat;
+            background-size: 1152px 648px;
+        }
+        /*#spinner {
+            width: 128px;
+            height: 128px;
+            display: block;
+            margin: auto;
+        }*/
+    </style>
+
+    <script type="text/javascript">
+        function searchUser() {
+            var input = document.getElementById('uSearch'),
+                user = input.value;
+            if (user) {
+                window.location.href = "/" + user;
+            } else {
+                alert('Please enter a username!');
+                input.focus();
+            }
+        }
+    </script>
+
+</head>
+
+<div id="loader">
+    <h3 style=" width: 100%; position: absolute; bottom: 0; margin-bottom: 10%; left: 0; text-align: center; color: #fff;">Scraping Profile</h3>
+    <!--<img id="spinner" src="../img/1493361803030.gif">-->
+</div>
+
+<body>
+
+    <input type="text" id="uSearch" name="search" placeholder="Search..">
+    <button onclick="searchUser()">GO</button>
+
+</body>
+
+</html>

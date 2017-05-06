@@ -1,0 +1,32 @@
+<!-- public/views/index.html -->
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Starter MEAN Single Page Application</title>
+
+    <script type="text/javascript">
+        function searchUser() {
+            var input = document.getElementById('uSearch'),
+                user = input.value;
+            if (user) {
+                window.location.href = "/" + user;
+            } else {
+                alert('Please enter a username!');
+                input.focus();
+            }
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <input type="text" id="uSearch" name="search" placeholder="Search..">
+    <button onclick="searchUser()">GO</button>
+    
+</body>
+
+</html>
