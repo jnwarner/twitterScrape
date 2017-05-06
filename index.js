@@ -5,7 +5,7 @@ var swearjar = require('swearjar')
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 const getTweet = "statuses/show"
-const getUser = "users/lookup"
+const getUser = "users/show"
 const getTimeline = "statuses/user_timeline"
 var tokens = require('./tokens.json')
 var routes = require('./routes.js')
@@ -42,37 +42,38 @@ app.get('/error', (req, res) => {
 app.get('/:name', (req, res) => {
     let term = req.params.name
     let userTweets = []
-    res.sendfile('./public/views/user.html');
-    getTweets(term, null, userTweets, () => {
-        let profaneTweets = []
-        console.log(userTweets)
-        if (userTweets.length === 0) {
-            console.log("no tweets gotten, was there an error?")
+    client.get(getUser, { screen_name: req.params.name }, (error, user, response) => {
+        console.log(error)
+        if (error !== null) {
             res.redirect('/error')
         } else {
-            //console.log(Object.keys(userTweets[0]))
-            console.log("Length of tweets object: " + userTweets.length)
-            for (i = 0; i < userTweets.length; i++) {
-                if (swearjar.profane(userTweets[i].text)) {
-                    profaneTweets.push(userTweets[i])
-                }
-            }
-            //res.send("Number of Profane Tweets: " + profaneTweets.length)
-
-            setTimeout(() => {
-                console.log("Number of tweets containing profanity: " + profaneTweets.length)
-                for (i = 0; i <= profaneTweets.length - 1; i++) {
-                    console.log("Index: " + i)
-                    console.log("Created At: " + profaneTweets[i].created_at)
-                    console.log("Tweet ID: " + profaneTweets[i].id)
-                    console.log("Tweet Content: " + profaneTweets[i].text)
-                    if (profaneTweets[i].in_reply_to_status_id !== null) {
-                        console.log("In reply to ID: " + profaneTweets[i].in_reply_to_status_id)
-                        console.log("In reply to user ID: " + profaneTweets[i].in_reply_to_user_id)
-                        console.log("In reply to Screen Name: " + profaneTweets[i].in_reply_to_screen_name)
+            res.sendfile('./public/views/user.html');
+            getTweets(term, null, userTweets, () => {
+                let profaneTweets = []
+                //console.log(Object.keys(userTweets[0]))
+                console.log("Length of tweets object: " + userTweets.length)
+                for (i = 0; i < userTweets.length; i++) {
+                    if (swearjar.profane(userTweets[i].text)) {
+                        profaneTweets.push(userTweets[i])
                     }
                 }
-            }, 5000)
+                //res.send("Number of Profane Tweets: " + profaneTweets.length)
+
+                setTimeout(() => {
+                    console.log("Number of tweets containing profanity: " + profaneTweets.length)
+                    for (i = 0; i <= profaneTweets.length - 1; i++) {
+                        console.log("Index: " + i)
+                        console.log("Created At: " + profaneTweets[i].created_at)
+                        console.log("Tweet ID: " + profaneTweets[i].id)
+                        console.log("Tweet Content: " + profaneTweets[i].text)
+                        if (profaneTweets[i].in_reply_to_status_id !== null) {
+                            console.log("In reply to ID: " + profaneTweets[i].in_reply_to_status_id)
+                            console.log("In reply to user ID: " + profaneTweets[i].in_reply_to_user_id)
+                            console.log("In reply to Screen Name: " + profaneTweets[i].in_reply_to_screen_name)
+                        }
+                    }
+                }, 5000)
+            })
         }
     })
     // client.get(getTimeline, { screen_name: req.params.name, count: 200 }, (error, user, response) => {
